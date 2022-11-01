@@ -1,24 +1,87 @@
-import logo from './logo.svg';
-import './App.css';
+import { Button, Container, Stack } from "react-bootstrap";
+import AddBudgetModal from "./components/AddBudgetModal";
+import AddExpenseModal from "./components/AddExpenseModal";
+import ViewExpensesModal from "./components/ViewExpensesModal";
+import BudgetCard from "./components/BudgetCard";
+import UncategorisedBudgetCard from "./components/UncategorisedBudgetCard";
+import TotalBudgetCard from "./components/TotalBudgetCard";
+import { useState } from "react";
+import { UNCATEGORISED_BUDGET_ID, useBudgets } from "./contexts/BudgetsContext";
 
 function App() {
+  const [showAddBudgetModal, setShowAddBudgetModal] = useState(false);
+  const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
+  const [viewExpensesModalBudgetId, setViewExpensesModalBudgetId] = useState();
+  const [addExpenseModalBudgetId, setAddExpenseModalBudgetId] = useState();
+  const { budgets, getBudgetExpenses } = useBudgets();
+
+  const openAddExpenseModal = (budgetId) => {
+    setShowAddExpenseModal(true);
+    setAddExpenseModalBudgetId(budgetId);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <Container className="my-4">
+        <Stack direction="horizontal" gap="2" className="mb-4">
+          <h1 className="me-auto">Budget App</h1>
+          <Button variant="primary" onClick={() => setShowAddBudgetModal(true)}>
+            Add Budget
+          </Button>
+          <Button variant="outline-primary" onClick={openAddExpenseModal}>
+            Add Expense
+          </Button>
+        </Stack>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(30rem, 1fr))",
+            gap: "1rem",
+            alignItems: "flex-start",
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          {budgets.map((budget) => {
+            const amount = getBudgetExpenses(budget.id).reduce(
+              (total, expense) => total + expense.amount,
+              0
+            );
+
+            return (
+              <BudgetCard
+                key={budget.id}
+                name={budget.name}
+                amount={amount}
+                maxAmount={budget.maxAmount}
+                onAddExpenseClick={() => openAddExpenseModal(budget.id)}
+                onViewExpensesClick={() =>
+                  setViewExpensesModalBudgetId(budget.id)
+                }
+              />
+            );
+          })}
+          <UncategorisedBudgetCard
+            onAddExpenseClick={openAddExpenseModal}
+            onViewExpensesClick={() =>
+              setViewExpensesModalBudgetId(UNCATEGORISED_BUDGET_ID)
+            }
+          />
+          <TotalBudgetCard />
+        </div>
+      </Container>
+      <AddBudgetModal
+        show={showAddBudgetModal}
+        handleClose={() => setShowAddBudgetModal(false)}
+      />
+      <AddExpenseModal
+        show={showAddExpenseModal}
+        defaultBudgetId={addExpenseModalBudgetId}
+        handleClose={() => setShowAddExpenseModal(false)}
+      />
+      <ViewExpensesModal
+        budgetId={viewExpensesModalBudgetId}
+        handleClose={() => setViewExpensesModalBudgetId()}
+      />
+    </>
   );
 }
 
