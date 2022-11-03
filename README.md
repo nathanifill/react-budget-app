@@ -50,5 +50,6 @@ Credits go to [Kyle from Web Dev Simplified](https://github.com/WebDevSimplified
 - There's flexbox wrapping
 - It's responsive on mobiles
 - The budgets are fixed
+- I've added a footer
 - There's no Uncategorised budget
 - There's a Reset button
