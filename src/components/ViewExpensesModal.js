@@ -1,22 +1,13 @@
 import { Modal, Button, Stack } from "react-bootstrap";
 import {
-  UNCATEGORISED_BUDGET_ID,
   useBudgets,
 } from "../contexts/BudgetsContext";
 import { formatCurrency } from "../utils";
 
 const ViewExpensesModal = ({ budgetId, handleClose }) => {
-  const { getBudgetExpenses, deleteBudget, deleteExpense, budgets } =
-    useBudgets();
-
+  const { getBudgetExpenses, deleteExpense, budgets } = useBudgets();
   const expenses = getBudgetExpenses(budgetId);
-
-  const uncategorisedBudgetSelected = UNCATEGORISED_BUDGET_ID === budgetId;
-
-  const budget = uncategorisedBudgetSelected
-    ? { name: "Uncategorised", id: UNCATEGORISED_BUDGET_ID }
-    : budgets.find((budget) => budget.id === budgetId);
-  // if budget is uncategorised budget, create a new budget to be able to use this modal, otherwise, give actual budget
+  const budget = budgets.find((budget) => budget.id === budgetId);
 
   return (
     <Modal show={budgetId != null} onHide={handleClose}>
@@ -24,18 +15,7 @@ const ViewExpensesModal = ({ budgetId, handleClose }) => {
         <Modal.Title>
           <Stack direction="horizontal" gap="2">
             <div>{budget?.name}</div>
-            {/* Only gets budget name if it id defined */}
-            {!uncategorisedBudgetSelected && (
-              <Button
-                onClick={() => {
-                  deleteBudget(budget);
-                  handleClose();
-                }}
-                variant="outline-danger"
-              >
-                Delete
-              </Button>
-            )}
+            {/* Only gets budget name if it is defined */}
           </Stack>
         </Modal.Title>
       </Modal.Header>
@@ -54,6 +34,7 @@ const ViewExpensesModal = ({ budgetId, handleClose }) => {
               </Button>
             </Stack>
           ))}
+          {expenses.length === 0 && "There are no expenses remaining."}
         </Stack>
       </Modal.Body>
     </Modal>

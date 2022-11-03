@@ -4,15 +4,43 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 const BudgetsContext = React.createContext();
 
-export const UNCATEGORISED_BUDGET_ID = "Uncategorised";
-
 export const useBudgets = () => {
   return useContext(BudgetsContext);
 };
 
+const startingBudgetState = [
+  { id: "NEC", name: "Necessities", maxAmount: 0 },
+  { id: "FFA", name: "Financial Freedom Amount", maxAmount: 0 },
+  { id: "EDU", name: "Education", maxAmount: 0 },
+  { id: "PLY", name: "Play", maxAmount: 0 },
+  { id: "LTS", name: "Long Term Savings for Spending", maxAmount: 0 },
+  { id: "GIV", name: "Give", maxAmount: 0 },
+];
+
 export const BudgetProvider = ({ children }) => {
-  const [budgets, setBudgets] = useLocalStorage("budgets", []);
+  const [budgets, setBudgets] = useLocalStorage("budgets", startingBudgetState);
   const [expenses, setExpenses] = useLocalStorage("expenses", []);
+
+  const budgetTotal = budgets.reduce(
+    (total, budget) => total + budget.maxAmount,
+    0
+  );
+  // gets total income/max budget across all jars (budgets)
+
+  const addIncome = (amount) => {
+    setBudgets((prevBudgets) => {
+      return prevBudgets.map((budget) => {
+        if (budget.id === "NEC") {
+          budget.maxAmount = amount * 0.55;
+        } else if (budget.id === "GIV") {
+          budget.maxAmount = amount * 0.05;
+        } else {
+          budget.maxAmount = amount * 0.1;
+        }
+        return budget;
+      });
+    });
+  };
 
   const getBudgetExpenses = (budgetId) => {
     return expenses.filter((expense) => expense.budgetId === budgetId);
@@ -22,30 +50,6 @@ export const BudgetProvider = ({ children }) => {
     // Sets expenses with an id, budgetId, amount and description
     setExpenses((prevExpenses) => {
       return [...prevExpenses, { id: uuidV4(), budgetId, amount, description }];
-    });
-  };
-
-  const addBudget = ({ name, maxAmount }) => {
-    // Sets budgets with an id, name and amount
-    setBudgets((prevBudgets) => {
-      // Check to see if a budget with this name already exists and return if so
-      if (prevBudgets.find((budget) => budget.name === name)) {
-        return prevBudgets;
-      }
-
-      return [...prevBudgets, { id: uuidV4(), name, maxAmount }];
-    });
-  };
-
-  const deleteBudget = ({ id }) => {
-    setExpenses((prevExpenses) => {
-      return prevExpenses.map((expense) => {
-        if (expense.budgetId !== id) return expense; // if the expense doesn't belong to this budget, ignore it
-        return { ...expense, budgetId: UNCATEGORISED_BUDGET_ID };
-      });
-    });
-    setBudgets((prevBudgets) => {
-      return prevBudgets.filter((budget) => budget.id !== id);
     });
   };
 
@@ -62,9 +66,12 @@ export const BudgetProvider = ({ children }) => {
         expenses,
         getBudgetExpenses,
         addExpense,
-        addBudget,
-        deleteBudget,
         deleteExpense,
+        addIncome,
+        budgetTotal,
+        startingBudgetState,
+        setBudgets,
+        setExpenses,
       }}
     >
       {children}

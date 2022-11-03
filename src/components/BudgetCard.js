@@ -29,7 +29,7 @@ const BudgetCard = ({
   grey,
   onAddExpenseClick,
   hideButtons,
-  onViewExpensesClick
+  onViewExpensesClick,
 }) => {
   const classNames = [];
 
@@ -42,18 +42,18 @@ const BudgetCard = ({
   return (
     <Card className={classNames.join(" ")}>
       <Card.Body>
-        <Card.Title className="d-flex justify-content-between align-items-baseline fw-normal mb-3">
+        <Card.Title className="d-flex flex-wrap justify-content-between align-items-baseline fw-normal mb-3">
           <p className="me-2">{name}</p>
-          <p className="d-flex align-items-baseline">
-            {formatCurrency(amount)}
-            {maxAmount && (
+          {maxAmount > 0 && (
+            <p className="d-flex align-items-baseline fs-6">
+              {formatCurrency(amount)}
               <span className="text-muted ms-1">
                 {" / " + formatCurrency(maxAmount)}
               </span>
-            )}
-          </p>
+            </p>
+          )}
         </Card.Title>
-        {maxAmount && (
+        {maxAmount > 0 && (
           <ProgressBar
             className="rounded-pill"
             variant={getProgressBarVariant(amount, maxAmount)}
@@ -64,14 +64,25 @@ const BudgetCard = ({
         )}
         {!hideButtons && (
           <Stack direction="horizontal" gap="2" className="mt-4">
-            <Button
-              variant="outline-primary"
-              className="ms-auto"
-              onClick={onAddExpenseClick}
-            >
-              Add Expenses
-            </Button>
-            <Button variant="outline-secondary" onClick={onViewExpensesClick}>View Expenses</Button>
+            {maxAmount > 0 && (
+              <>
+                <Button
+                  variant="primary"
+                  className="ms-auto"
+                  onClick={onAddExpenseClick}
+                >
+                  Add Expense
+                </Button>
+                {amount > 0 && (
+                  <Button
+                    variant="outline-danger"
+                    onClick={onViewExpensesClick}
+                  >
+                    Delete Expenses
+                  </Button>
+                )}
+              </>
+            )}
           </Stack>
         )}
       </Card.Body>

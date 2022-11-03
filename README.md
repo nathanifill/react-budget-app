@@ -1,70 +1,54 @@
-# Getting Started with Create React App
+## Project Title
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This app is named "6 Jars Budgeting App".
 
-## Available Scripts
+## Project Description
 
-In the project directory, you can run:
+This is a [React.js](https://reactjs.org/) project bootstrapped with [`create-react-app`](https://github.com/facebook/create-react-app).
 
-### `npm start`
+It runs in Local Storage so there's no back end for this at the moment. If there's demand for that, that's something that I could implement in the future.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Some features I'd like to implement in the future include a dark mode toggle and an option to edit expenses - either amounts or jars.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## How to install and run the project
 
-### `npm test`
+First, run the development server:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-### `npm run build`
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Once the app is up and running, you need to click on the "Add Income" button to enter an income. It's expected that this is your monthly net (after-tax) income but there's no reason that it has to be.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The app will then divide this income across the 6 budgets or "jars" and show you how much money you have to spend in each category. If you edit your income later, the budgets will recalculate.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+You can add expenses for different categories by providing a description of the expense and an amount.
 
-### `npm run eject`
+The app will show your progress based on what you enter and how far through the month we are. For example, if you've spent more than half of your money for a jar and you're not even half way through the month, the progress bar will show up as yellow. Otherwise, if your spending is in check, it'll show up in blue. If you overspend the budget, it will show up in red and the card will turn red.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The Total card will show you your total spending and budget and will also change colour depending on how much you've spent and how far through the month we are.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+There's also a "Reset App" button so that you can remove all of the data from the app.
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To learn more about React.js or the 6 Jars Money Management Method, take a look at the following resources:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [React.js Documentation](https://reactjs.org/) - learn about React.js features and API.
+- [6 Jars Cheatsheet](http://6jars.com) - a short cheat sheet about the 6 Jars money management method.
+- [6 Jars Money Management System](https://www.harveker.com/blog/6-step-money-managing-system/) - a blog post and infographic explaining the method from its creator, T. Harv Eker.
 
-### Code Splitting
+## Credits
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Credits go to [Kyle from Web Dev Simplified](https://github.com/WebDevSimplified) who inspired me to do this after I watched his [Budget App Tutorial](https://youtu.be/yz8x71BiGXg). This app is _very_ similar (and looks almost identical since I wanted to try out using Bootstrap for once) but there's some additional features and changes in my version:
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- You can now enter your income
+- There's flexbox wrapping
+- It's responsive on mobiles
+- The budgets are fixed
+- There's no Uncategorised budget
+- There's a Reset button
